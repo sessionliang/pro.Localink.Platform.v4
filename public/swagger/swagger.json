@@ -1,0 +1,811 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "\u6566\u767e\u7cfb\u7edf\u63a5\u53e3\u8bf4\u660e\u6587\u6863",
+        "description": "\u63a5\u53e3\u8fd4\u56de\u7edf\u4e00\u683c\u5f0f{code, data, msg},\u8be6\u7ec6\u4ecb\u7ecd\u8bf7\u67e5\u770b\u9875\u9762Model\u4e2dres_json\u8bf4\u660e",
+        "termsOfService": "",
+        "contact": {
+            "email": "sessionliang@outlook.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "pro.eshop.admin:8080",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/shippingaddress/index": {
+            "get": {
+                "tags": [
+                    "Shippingaddress"
+                ],
+                "description": "\u83b7\u53d6\u914d\u9001\u5730\u5740\u5217\u8868",
+                "operationId": "shippingaddress_index",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "\u9875\u5927\u5c0f",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "\u7b2c\u51e0\u9875",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u914d\u9001\u5730\u5740\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/shippingaddress/add": {
+            "post": {
+                "tags": [
+                    "Shippingaddress"
+                ],
+                "description": "\u6dfb\u52a0\u914d\u9001\u5730\u5740",
+                "operationId": "shippingaddress_add",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "contact",
+                        "in": "formData",
+                        "description": "\u8054\u7cfb\u4eba",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "description": "\u8054\u7cfb\u7535\u8bdd",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "province",
+                        "in": "formData",
+                        "description": "\u7701",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "in": "formData",
+                        "description": "\u5e02",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "county",
+                        "in": "formData",
+                        "description": "\u533a\u53bf",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "\u8be6\u7ec6\u5730\u5740",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_default",
+                        "in": "formData",
+                        "description": "\u662f\u5426\u662f\u9ed8\u8ba4\u5730\u5740",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u914d\u9001\u5730\u5740\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/shippingaddress/edit": {
+            "post": {
+                "tags": [
+                    "Shippingaddress"
+                ],
+                "description": "\u7f16\u8f91\u914d\u9001\u5730\u5740",
+                "operationId": "shippingaddress_edit",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "formData",
+                        "description": "\u914d\u9001\u5730\u5740id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "contact",
+                        "in": "formData",
+                        "description": "\u8054\u7cfb\u4eba",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "description": "\u8054\u7cfb\u7535\u8bdd",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "province",
+                        "in": "formData",
+                        "description": "\u7701",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "in": "formData",
+                        "description": "\u5e02",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "county",
+                        "in": "formData",
+                        "description": "\u533a\u53bf",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "\u8be6\u7ec6\u5730\u5740",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_default",
+                        "in": "formData",
+                        "description": "\u662f\u5426\u662f\u9ed8\u8ba4\u5730\u5740",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u914d\u9001\u5730\u5740\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/shippingaddress/setdefault": {
+            "post": {
+                "tags": [
+                    "Shippingaddress"
+                ],
+                "description": "\u8bbe\u7f6e\u9ed8\u8ba4\u914d\u9001\u5730\u5740",
+                "operationId": "shippingaddress_setdefault",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "formData",
+                        "description": "\u914d\u9001\u5730\u5740id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u914d\u9001\u5730\u5740\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/shippingaddress/remove": {
+            "post": {
+                "tags": [
+                    "Shippingaddress"
+                ],
+                "description": "\u5220\u9664\u9ed8\u8ba4\u914d\u9001\u5730\u5740",
+                "operationId": "shippingaddress_remove",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "formData",
+                        "description": "\u914d\u9001\u5730\u5740id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u914d\u9001\u5730\u5740\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.order/index": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "\u83b7\u53d6\u8ba2\u5355\u5217\u8868",
+                "operationId": "order_index",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "\u5f00\u59cb\u65e5\u671f",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "\u7ed3\u675f\u65e5\u671f",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "\u9875\u5927\u5c0f",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "\u7b2c\u51e0\u9875",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u8ba2\u5355\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002\r\n     *                      \u8ba2\u5355\u72b6\u6001\uff0c0\uff1a\u672a\u6d3e\u9001\uff0c1\uff1a\u6d3e\u9001\u4e2d\uff0c2\uff1a\u5df2\u5b8c\u6210\uff0c-1:\u5df2\u53d6\u6d88"
+                    }
+                }
+            }
+        },
+        "/water.order/add": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "\u6dfb\u52a0\u8ba2\u5355",
+                "operationId": "order_add",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "buy_count",
+                        "in": "formData",
+                        "description": "\u6876\u6570",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_water_limit",
+                        "in": "formData",
+                        "description": "\u662f\u5426\u4f7f\u7528\u914d\u989d",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u8ba2\u5355\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.order/confirm": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "\u786e\u8ba4\u8ba2\u5355",
+                "operationId": "order_confirm",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "buy_count",
+                        "in": "formData",
+                        "description": "\u6876\u6570",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_water_limit",
+                        "in": "formData",
+                        "description": "\u662f\u5426\u4f7f\u7528\u914d\u989d",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "shippingaddress_id",
+                        "in": "formData",
+                        "description": "\u914d\u9001\u5730\u5740id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u8ba2\u5355\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.order/one": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "description": "\u6839\u636e\u8ba2\u5355\u53f7\u83b7\u53d6\u8ba2\u5355",
+                "operationId": "order_one",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "\u8ba2\u5355\u53f7",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u8ba2\u5355\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.recharge/index": {
+            "get": {
+                "tags": [
+                    "Recharge"
+                ],
+                "description": "\u83b7\u53d6\u5145\u503c\u8bb0\u5f55\u5217\u8868",
+                "operationId": "recharge_index",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "\u5f00\u59cb\u65e5\u671f",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "\u7ed3\u675f\u65e5\u671f",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "\u9875\u5927\u5c0f",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "\u7b2c\u51e0\u9875",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u5145\u503c\u8bb0\u5f55\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002\r\n     *                      \u5145\u503c\u8bb0\u5f55\u72b6\u6001pay_status\uff0c0\uff1a\u672a\u652f\u4ed8\uff0c1\uff1a\u5df2\u652f\u4ed8"
+                    }
+                }
+            }
+        },
+        "/water.recharge/add": {
+            "post": {
+                "tags": [
+                    "Recharge"
+                ],
+                "description": "\u6dfb\u52a0\u5145\u503c\u8bb0\u5f55",
+                "operationId": "recharge_add",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "change_count",
+                        "in": "formData",
+                        "description": "\u8d2d\u4e70\u6876\u6570",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u5145\u503c\u8bb0\u5f55\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.recharge/paysuccess": {
+            "post": {
+                "tags": [
+                    "Recharge"
+                ],
+                "description": "\u5145\u503c\u5df2\u4ed8\u6b3e",
+                "operationId": "recharge_paysuccess",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "description": "\u8ba2\u5355\u53f7",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u5145\u503c\u8bb0\u5f55\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/water.recharge/pricerule": {
+            "get": {
+                "tags": [
+                    "Recharge"
+                ],
+                "description": "\u83b7\u53d6\u5b9a\u4ef7\u6807\u51c6",
+                "operationId": "recharge_pricerule",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u5145\u503c\u8bb0\u5f55\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002\r\n     *                      types: recharge-\u5145\u503c\uff0cbuy-\u76f4\u63a5\u8d2d\u4e70"
+                    }
+                }
+            }
+        },
+        "/wechat.wxmember/login": {
+            "post": {
+                "tags": [
+                    "WXMember"
+                ],
+                "description": "\u5c0f\u7a0b\u5e8f\u767b\u5f55\u51ed\u8bc1\u6821\u9a8c",
+                "operationId": "wxmember_login",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "description": "\u4e34\u65f6\u767b\u5f55\u51ed\u8bc1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "signature",
+                        "in": "formData",
+                        "description": "\u7b7e\u540d",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "encryptedData",
+                        "in": "formData",
+                        "description": "\u5305\u62ec\u654f\u611f\u6570\u636e\u5728\u5185\u7684\u5b8c\u6574\u7528\u6237\u4fe1\u606f\u7684\u52a0\u5bc6\u6570\u636e",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "iv",
+                        "in": "formData",
+                        "description": "\u52a0\u5bc6\u7b97\u6cd5\u7684\u521d\u59cb\u5411\u91cf",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rawData",
+                        "in": "formData",
+                        "description": "\u4e0d\u5305\u62ec\u654f\u611f\u4fe1\u606f\u7684\u539f\u59cb\u6570\u636e\u5b57\u7b26\u4e32\uff0c\u7528\u4e8e\u8ba1\u7b97\u7b7e\u540d",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u8fd4\u56de\u7528\u6237\u4fe1\u606f\u4ee5\u53ca\u7b2c\u4e09\u65b9session\uff1b\u5f53code=0,\u8fd4\u56de\u7b2c\u4e09\u65b9session\uff0c\u5ba2\u6237\u7aef\u9700\u8981\u8df3\u8f6c\u5230\u586b\u5199\u7528\u6237\u57fa\u672c\u4fe1\u606f\u9875\u9762\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/wechat.wxmember/register": {
+            "post": {
+                "tags": [
+                    "WXMember"
+                ],
+                "description": "\u5c0f\u7a0b\u5e8f\u7528\u6237\u6ce8\u518c",
+                "operationId": "wxmember_register",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u5c0f\u7a0b\u5e8f\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "real_name",
+                        "in": "formData",
+                        "description": "\u59d3\u540d",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "gender",
+                        "in": "formData",
+                        "description": "\u6027\u522b",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "formData",
+                        "description": "\u751f\u65e5",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "description": "\u624b\u673a\u53f7",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "description": "\u9a8c\u8bc1\u7801",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id_number",
+                        "in": "formData",
+                        "description": "\u8eab\u4efd\u8bc1\u53f7",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pcc",
+                        "in": "formData",
+                        "description": "\u6240\u5728\u5730: \u7701 \u5e02 \u533a\u53bf\u3002\u4f8b\u5982\uff1a\u5c71\u897f\u7701 \u592a\u539f\u5e02 \u5c0f\u5e97\u533a",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "\u8be6\u7ec6\u5730\u5740",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u6ce8\u518c\u6210\u529f\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        },
+        "/wechat.wxmember/getcode": {
+            "post": {
+                "tags": [
+                    "WXMember"
+                ],
+                "description": "\u53d1\u9001\u624b\u673a\u9a8c\u8bc1\u7801",
+                "operationId": "wxmember_getcode",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "ds-token",
+                        "in": "header",
+                        "description": "\u5c0f\u7a0b\u5e8f\u8bbf\u95ee\u4ee4\u724c\uff0c\u901a\u8fc7login\u63a5\u53e3\u83b7\u53d6",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "formData",
+                        "description": "\u624b\u673a\u53f7",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5f53code=1,\u53d1\u9001\u9a8c\u8bc1\u7801\u6210\u529f\uff1b\u5f53code<0\u65f6\uff0c\u62a5\u9519\u3002"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "res_json": {
+            "properties": {
+                "code": {
+                    "title": "\u8fd4\u56de\u7801",
+                    "description": "code\u4e3a1\u65f6\uff0c\u8868\u793a\u63a5\u53e3\u8bbf\u95ee\u6210\u529f",
+                    "type": "int32"
+                },
+                "data": {
+                    "title": "\u8fd4\u56de\u7ed3\u679c",
+                    "description": "code\u4e3a1\u65f6\uff0cdata\u4e3a\u8fd4\u56de\u7ed3\u679c",
+                    "type": "string"
+                },
+                "msg": {
+                    "title": "\u9519\u8bef\u4fe1\u606f",
+                    "description": "code\u4e0d\u4e3a1\u65f6\uff0cmsg\u4e3a\u9519\u8bef\u4fe1\u606f",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Shippingaddress",
+            "description": "\u914d\u9001\u5730\u5740\u76f8\u5173\u64cd\u4f5c"
+        },
+        {
+            "name": "Order",
+            "description": "\u8ba2\u5355\u76f8\u5173\u64cd\u4f5c"
+        },
+        {
+            "name": "Recharge",
+            "description": "\u5145\u503c\u8bb0\u5f55\u76f8\u5173\u64cd\u4f5c"
+        },
+        {
+            "name": "WXMember",
+            "description": "\u5fae\u4fe1\u7528\u6237\u64cd\u4f5c"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+.idea
+composer.lock
+*.log
+application/database.php
+data/install.lock
+.DS_Store
+vendor
