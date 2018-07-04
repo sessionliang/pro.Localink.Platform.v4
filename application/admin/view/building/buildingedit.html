@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑单元楼</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="__JS__/layui/css/layui.css"rel="stylesheet">
+    <style>
+        .layui-form-switch{
+            box-sizing: unset;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑单元楼</h5>
+                    <div class="ibox-tools">
+                        <a href="{:url('building/index')}" class="btn btn-primary btn-xs">返回</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form class="layui-form form-horizontal m-t" method="post" action="{:url('building/buildingedit')}">
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">所属小区：</label>
+                            <div class="col-sm-7">
+                                <select id="community_id" name="community_id" lay-search>
+                                    <option value="">-- 请选择小区 --</option>
+                                    {volist name="$communitys" id="vo"}
+                                    <option {if condition="$vo->id==$building->community_id"}selected='selected'{/if} value="{$vo->id}">{$vo->cname}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">单元楼名称：</label>
+                            <div class="col-sm-7">
+                                <input id="bname" value="{$building->bname}" type="text" class="form-control" name="bname" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <div class="col-sm-7">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="id" value="{$building->id}"/>
+                                <button style="float:right;margin-left:20px;" class="layui-btn" lay-submit="" lay-filter="ADDC">立即提交</button>
+                                <button style="float:right;" type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //表单
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(ADDC)', function (data) {
+                $.post('',data.field,function (res) {
+                    if(res.code=='1'){
+                        layer.alert(res.msg, {title: '友情提示', icon: 1, closeBtn: 0}, function(){
+                            window.location.href = res.data;
+                        });
+                    }else{
+                        layer.msg(res.msg, {anim: 6});
+                    }
+                })
+                return false;
+            });
+        });
+
+
+    });
+</script>
+</body>
+</html>

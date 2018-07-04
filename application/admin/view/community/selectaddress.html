@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择地址</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="__JS__/layui/css/layui.css"rel="stylesheet">
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=4U5wU3motZb9FckFtOXADTdSUoveb8Fu"></script>
+    <style type="text/css">
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px}
+        #container{height:100%}
+    </style>
+</head>
+<body class="gray-bg">
+<div style="margin:20px;">
+    <input id="keyword" placeholder="请输入关键字回车搜索" class="form-control" type="text" onclick="search()"/>
+</div>
+<div id="msgPanel" style="display:none;">
+    <div style="margin-bottom:10px;">
+        <span>地址：</span>
+        <span id="msg"></span>
+    </div>
+    <input type="button" value="选择" class="btn btn-primary" onclick="selectAddress($(this).parent().attr('data-address'),$(this).parent().attr('data-lat'),$(this).parent().attr('data-lng'))"/>
+</div>
+<div id="container">
+
+</div>
+<!--<div class="wrapper wrapper-content animated fadeInRight">-->
+
+<!--</div>-->
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+
+    var map;
+    var local;
+    //检索配置
+    var options = {
+        renderOptions: {autoViewport: true},
+        onSearchComplete: function(results){
+            onSearchComplete(results);
+        }
+    };
+
+    $(function(){
+        $("#keyword").bind("keydown",function(e){
+            if(e.keyCode==13){
+                search();
+            }
+        });
+
+        var point = new BMap.Point(116.404, 39.915);
+
+        if('{$lat}' != '' && '{$lng}' != ''){
+            point = new BMap.Point(parseFloat('{$lng}'),parseFloat('{$lat}'));
+        }
+
+        map = new BMap.Map("container");          // 创建地图实例
+        map.centerAndZoom(point, 11);
+        map.enableScrollWheelZoom(true);
+
+
+        local = new BMap.LocalSearch(map, options);
+    });
+
+    /*
+    * 检索完成事件
+    * */
+    function onSearchComplete(results){
+        if (local.getStatus() == BMAP_STATUS_SUCCESS){
+            // 判断状态是否正确
+            var s = [];
+            for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                if(i == 0){
+                    map.setZoom(14);
+                    map.panTo(results.getPoi(i).point);
+                }
+                addMarker(results.getPoi(i));
+            }
+        }
+    }
+
+    /*
+    * 搜索服务
+    * */
+    function search(){
+        map.reset();
+        local.search($("#keyword").val());
+    }
+
+    /*
+    * 地图打点
+    * */
+    function addMarker(position){
+        var marker = new BMap.Marker(position.point);  // 创建标注
+        marker.addEventListener("click", function(){
+            showMsg(position);
+        });
+        map.addOverlay(marker);// 将标注添加到地图中
+    }
+
+    /*
+    * 显示信息窗口
+    * */
+    function showMsg(position){
+        var opts = {
+            width : 250,     // 信息窗口宽度
+            height: 100,     // 信息窗口高度
+            title : position.title  // 信息窗口标题
+        }
+        $("#msg").html(position.address);
+        var tmp = $("#msgPanel").clone(true);
+        tmp.attr("data-address",position.address);
+        tmp.attr("data-lat",position.point.lat);
+        tmp.attr("data-lng",position.point.lng);
+        tmp.css("display","block").appendTo("body");
+        var infoWindow = new BMap.InfoWindow(tmp[0], opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow, position.point);      // 打开信息窗口
+    }
+
+    /*
+    * 选择地址
+    * */
+    function selectAddress(address, lat, lng){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+        parent.selectAddress({
+            address: address,
+            lat:lat,
+            lng:lng
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑小区</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="__JS__/layui/css/layui.css"rel="stylesheet">
+    <style>
+        .layui-form-switch{
+            box-sizing: unset;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑小区</h5>
+                    <div class="ibox-tools">
+                        <a href="{:url('community/index')}" class="btn btn-primary btn-xs">返回</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form class="layui-form form-horizontal m-t" method="post" action="{:url('community/communityedit')}">
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">小区名称：</label>
+                            <div class="col-sm-7">
+                                <input id="cname" value="{$community->cname}" type="text" class="form-control" name="cname" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">地址：</label>
+                            <div class="col-sm-6">
+                                <input id="lat" value="{$community->lat}" name="lat" type="hidden" class="form-control" value="" />
+                                <input id="lng" value="{$community->lng}" name="lng" type="hidden" class="form-control" value="" />
+                                <input disabled id="address" value="{$community->address}" type="text" class="form-control" name="address" required="" aria-required="true">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="button" style="float:right;" class="btn btn-outline btn-primary" value="选择地址" onclick="openMap()"/>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">门禁类型：</label>
+                            <div class="col-sm-7">
+                                <ul>
+                                    <li><input type="checkbox" name="door_types[]" value="0" {if condition="in_array(0,$community->door_types)"} checked {/if} title="Gate" lay-skin="primary" checked></li>
+                                    <li><input type="checkbox" name="door_types[]" value="1" {if condition="in_array(1,$community->door_types)"} checked {/if} title="Main Entuance" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="2" {if condition="in_array(2,$community->door_types)"} checked {/if} title="Carpark Basement" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="3" {if condition="in_array(3,$community->door_types)"} checked {/if} title="MailBox" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="4" {if condition="in_array(4,$community->door_types)"} checked {/if} title="Building Entrance" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="5" {if condition="in_array(5,$community->door_types)"} checked {/if} title="Storage Room" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="6" {if condition="in_array(6,$community->door_types)"} checked {/if} title="Utility Room" lay-skin="primary"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">小区图片：</label>
+                            <div class="col-sm-7">
+                                <input id="images" type="text" class="form-control" name="images" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <div class="col-sm-7">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="id" value="{$community->id}"/>
+                                <button style="float:right;margin-left:20px;" class="layui-btn" lay-submit="" lay-filter="ADDC">立即提交</button>
+                                <button style="float:right;" type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //表单
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(ADDC)', function (data) {
+                $.post('',data.field,function (res) {
+                    if(res.code=='1'){
+                        layer.alert(res.msg, {title: '友情提示', icon: 1, closeBtn: 0}, function(){
+                            window.location.href = res.data;
+                        });
+                    }else{
+                        layer.msg(res.msg, {anim: 6});
+                    }
+                })
+                return false;
+            });
+        });
+
+
+    });
+
+    /*
+    * 打开地图
+    * */
+    function openMap() {
+        var index = layer.open({
+            type: 2,
+            area:['800px', '500px'],
+            title:'选择地址',
+            skin: 'layui-layer-demo', //加上边框
+            content: '{:url("community/selectAddress")}?lat='+$("#position_lat").val()+"&lng="+$("#position_lng").val()
+        });
+    }
+
+    /*
+    * 选择位置回调
+    * */
+    function selectAddress(position){
+        if(position){
+            $("#address").val(position.address);
+            $("#lat").val(position.lat);
+            $("#lng").val(position.lng);
+        }
+    }
+</script>
+</body>
+</html>

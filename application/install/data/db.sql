@@ -66,6 +66,23 @@ CREATE TABLE `tp_nodes` (
 -- ----------------------------
 -- Records of tp_nodes
 -- ----------------------------
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('1','物业管理','#','#','2','0','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('2','小区管理','community','index','2','1','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('3','添加小区','community','communityadd','1','2','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('4','编辑小区','community','communityedit','1','2','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('5','删除小区','community','communitydel','1','2','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('6','小区详情','community','detail','1','2','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('7','单元楼管理','building','index','2','1','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('8','添加单元楼','building','buildingadd','1','7','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('9','编辑单元楼','building','buildingedit','1','7','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('10','删除单元楼','building','buildingdel','1','7','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('11','门牌号管理','flatno','index','2','1','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('12','添加门牌号','flatno','flatnoadd','1','11','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('13','编辑门牌号','flatno','flatnoedit','1','11','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('14','删除门牌号','flatno','flatnodel','1','11','');
+
+
+
 
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('26','权限管理','#','#','2','0','fa fa-users');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('27','管理员管理','user','index','2','26','');
@@ -91,6 +108,7 @@ insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('55','系统日志','systemlog','index','2','49','');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('56','清空系统日志','systemlog','systemlogdel','1','55','');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('57','平台配置','setting','index','2','49','');
+
 
 -- ----------------------------
 -- Table structure for tp_roles
@@ -174,16 +192,17 @@ CREATE TABLE IF NOT EXISTS `tp_system_logs` (
 
 
 -- ----------------------------
--- Table structure for tp_localink_communitys 小区
+-- Table structure for tp_communitys 小区
 -- ----------------------------
-DROP TABLE IF EXISTS `tp_localink_communitys`;
-CREATE TABLE IF NOT EXISTS `tp_localink_communitys`(
+DROP TABLE IF EXISTS `tp_communitys`;
+CREATE TABLE IF NOT EXISTS `tp_communitys`(
   `id` int(11) NOT NULL  AUTO_INCREMENT,
   `cname` varchar(50) NOT NULL COMMENT '小区名称',
   `address` varchar(100) NULL COMMENT '地址',
-  `Lat` decimal(10,7) NULL COMMENT '维度',
-  `Lng` decimal(10,7) NULL COMMENT '经度',
+  `lat` decimal(10,7) NULL COMMENT '维度',
+  `lng` decimal(10,7) NULL COMMENT '经度',
   `images` varchar(1000) NULL COMMENT '小区图片',
+  `door_types` varchar(200) NULL COMMENT '门禁类型，多个之间逗号隔开',
   `is_auth` tinyint(1) NOT NULL DEFAULT '0' COMMENT '妙兜是否认证：0-否，1-是',
   `depart_id` varchar(50) NULL COMMENT '妙兜小区ID',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除：0-否，1-是',
@@ -197,10 +216,10 @@ CREATE TABLE IF NOT EXISTS `tp_localink_communitys`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='小区表';
 
 -- ----------------------------
--- Table structure for tp_localink_buildings 单元楼
+-- Table structure for tp_buildings 单元楼
 -- ----------------------------
-DROP TABLE IF EXISTS `tp_localink_buildings`;
-CREATE TABLE IF NOT EXISTS `tp_localink_buildings`(
+DROP TABLE IF EXISTS `tp_buildings`;
+CREATE TABLE IF NOT EXISTS `tp_buildings`(
   `id` int(11) NOT NULL  AUTO_INCREMENT,
   `community_id` int(11) NOT NULL COMMENT '小区ID',
   `bname` varchar(50) NOT NULL COMMENT '单元楼名称',
@@ -216,10 +235,10 @@ CREATE TABLE IF NOT EXISTS `tp_localink_buildings`(
 
 
 -- ----------------------------
--- Table structure for tp_localink_flatnumbers 门牌号
+-- Table structure for tp_flatnos 门牌号
 -- ----------------------------
-DROP TABLE IF EXISTS `tp_localink_flatnumbers`;
-CREATE TABLE IF NOT EXISTS `tp_localink_flatnumbers`(
+DROP TABLE IF EXISTS `tp_flatnos`;
+CREATE TABLE IF NOT EXISTS `tp_flatnos`(
   `id` int(11) NOT NULL  AUTO_INCREMENT,
   `community_id` int(11) NOT NULL COMMENT '小区ID',
   `building_id` int(11) NOT NULL COMMENT '单元ID',
@@ -236,10 +255,10 @@ CREATE TABLE IF NOT EXISTS `tp_localink_flatnumbers`(
 
 
 -- ----------------------------
--- Table structure for tp_localink_doors 门禁
+-- Table structure for tp_doors 门禁
 -- ----------------------------
-DROP TABLE IF EXISTS `tp_localink_doors`;
-CREATE TABLE IF NOT EXISTS `tp_localink_doors`(
+DROP TABLE IF EXISTS `tp_doors`;
+CREATE TABLE IF NOT EXISTS `tp_doors`(
   `id` int(11) NOT NULL  AUTO_INCREMENT,
   `community_id` int(11) NULL COMMENT '小区ID',
   `building_id` int(11) NULL COMMENT '单元ID',

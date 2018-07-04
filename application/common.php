@@ -102,8 +102,7 @@ function authCheck($rule)
 {
     //非检测权限
     $uneed_check = array(
-        'water.othersettings/selectaddress',
-        'shippingaddress/shippingaddressaddforselect'
+        'community/selectaddress'
     );
 
     $control = explode('/', $rule)['0'];
