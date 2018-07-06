@@ -34,13 +34,13 @@ function getHostDomain()
  * 获取当前端口
  * @return string
  */
-function getPort(){
-    $port= $_SERVER['SERVER_PORT'];
-    if($port=="80"||$port=="443"){
+function getPort()
+{
+    $port = $_SERVER['SERVER_PORT'];
+    if ($port == "80" || $port == "443") {
         return "";
-    }
-    else{
-        return ":".$port;
+    } else {
+        return ":" . $port;
     }
 }
 
@@ -81,13 +81,13 @@ function getServerIP()
  */
 function showOperate($operate = [])
 {
-    if(empty($operate)){
+    if (empty($operate)) {
         return '';
     }
     $option = '';
-    foreach($operate as $key=>$vo){
-        if(authCheck($vo['auth'])){
-            $option .= ' <a href="' . $vo['href'] . '"><button type="button" class="btn btn-' . $vo['btnStyle'] . ' btn-sm">'.
+    foreach ($operate as $key => $vo) {
+        if (authCheck($vo['auth'])) {
+            $option .= ' <a href="' . $vo['href'] . '"><button type="button" class="btn btn-' . $vo['btnStyle'] . ' btn-sm">' .
                 '<i class="' . $vo['icon'] . '"></i> ' . $key . '</button></a>';
         }
     }
@@ -106,19 +106,19 @@ function authCheck($rule)
     );
 
     $control = explode('/', $rule)['0'];
-    if(in_array($control, ['login', 'index'])){//排除登录页，框架首页
+    if (in_array($control, ['login', 'index'])) {//排除登录页，框架首页
         return true;
     }
-    if(in_array($rule, ['weixin/index/indexpage', 'weixin/index/index', 'weixin/app/index'])){//排除微信框架首页
+    if (in_array($rule, ['weixin/index/indexpage', 'weixin/index/index', 'weixin/app/index'])) {//排除微信框架首页
         return true;
     }
-    if(in_array($rule, ['memberreturn/memberreturnconfirm'])){//排除自定义页面
+    if (in_array($rule, ['memberreturn/memberreturnconfirm'])) {//排除自定义页面
         return true;
     }
-    if(in_array($rule, $uneed_check)){
+    if (in_array($rule, $uneed_check)) {
         return true;
     }
-    if(in_array($rule, session('action'))){
+    if (in_array($rule, session('action'))) {
         return true;
     }
 
@@ -136,9 +136,9 @@ function getTree($pInfo, $spread = true)
     $res = [];
     $tree = [];
     //整理数组
-    foreach($pInfo as $key=>$vo){
+    foreach ($pInfo as $key => $vo) {
 
-        if($spread){
+        if ($spread) {
             $vo['spread'] = true;  //默认展开
         }
         $res[$vo['id']] = $vo;
@@ -147,19 +147,19 @@ function getTree($pInfo, $spread = true)
     unset($pInfo);
 
     //查找子孙
-    foreach($res as $key=>$vo){
-        if(0 != $vo['pid']){
+    foreach ($res as $key => $vo) {
+        if (0 != $vo['pid']) {
             $res[$vo['pid']]['children'][] = &$res[$key];
         }
     }
 
     //过滤杂质
-    foreach( $res as $key=>$vo ){
-        if(0 == $vo['pid']){
+    foreach ($res as $key => $vo) {
+        if (0 == $vo['pid']) {
             $tree[] = $vo;
         }
     }
-    unset( $res );
+    unset($res);
 
     return $tree;
 }
@@ -172,9 +172,9 @@ function getTree($pInfo, $spread = true)
 function subTree($param, $pid = 0)
 {
     static $res = [];
-    foreach($param as $key=>$vo){
+    foreach ($param as $key => $vo) {
 
-        if( $pid == $vo['pid'] ){
+        if ($pid == $vo['pid']) {
             $res[] = $vo;
             subTree($param, $vo['id']);
         }
@@ -199,8 +199,9 @@ function msg($code, $data, $msg)
  * @param $data
  * @param $msge
  */
-function resJson($code,$data,$msg){
-    return json(msg($code,$data,$msg));
+function resJson($code, $data, $msg)
+{
+    return json(msg($code, $data, $msg));
 }
 
 /**
@@ -214,21 +215,21 @@ function prepareMenu($param)
     $parent = []; //父类
     $child = [];  //子类
 
-    foreach($param as $key=>$vo){
+    foreach ($param as $key => $vo) {
 
-        if(0 == $vo['type_id']){
+        if (0 == $vo['type_id']) {
             $vo['href'] = '#';
             $parent[] = $vo;
-        }else{
-            $vo['href'] = url($vo['control_name'] .'/'. $vo['action_name']); //跳转地址
+        } else {
+            $vo['href'] = url($vo['control_name'] . '/' . $vo['action_name']); //跳转地址
             $child[] = $vo;
         }
     }
 
-    foreach($parent as $key=>$vo){
-        foreach($child as $k=>$v){
+    foreach ($parent as $key => $vo) {
+        foreach ($child as $k => $v) {
 
-            if($v['type_id'] == $vo['id']){
+            if ($v['type_id'] == $vo['id']) {
                 $parent[$key]['child'][] = $v;
             }
         }
@@ -303,12 +304,14 @@ function getAdminID()
 
 define("PRIVATEKEY", "1234567812345678");
 define("IV", "1234567812345678");
-function aesEncryption($data){
+function aesEncryption($data)
+{
     $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, PRIVATEKEY, $data, MCRYPT_MODE_CBC, IV);
     return base64_encode($encrypted);
 }
 
-function aesDecode($data){
+function aesDecode($data)
+{
     $encryptedData = base64_decode($data);
     $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, PRIVATEKEY, $encryptedData, MCRYPT_MODE_CBC, IV);
     return trim($decrypted);
@@ -321,7 +324,7 @@ function aesDecode($data){
  * @param number $convert 转换大小写
  * @return string
  */
-function random($length=6, $type='string', $convert=0)
+function random($length = 6, $type = 'string', $convert = 0)
 {
 
     $config = array(
@@ -348,21 +351,22 @@ function random($length=6, $type='string', $convert=0)
 /*
  * 添加管理员日志
  * */
-function adminLog($title,$message){
-    try{
+function adminLog($title, $message)
+{
+    try {
         $adminlog = new app\common\model\AdminLogs();
         $adminlog['title'] = $title;
         $adminlog['message'] = $message;
         $adminlog['user_name'] = getAdminName();
         $adminlog['ip'] = getServerIP();
         $adminlog->validate()->save();
-    }
-    catch(Exception $ex){
+    } catch (Exception $ex) {
         //记录日志的操作内部消化错误信息
     }
 }
 
-function getRequest($url){
+function getRequest($url)
+{
     //初始化
     $curl = curl_init();
     //设置抓取的url
@@ -378,7 +382,7 @@ function getRequest($url){
     curl_close($curl);
     //print_r($data);
     //显示获得的数据
-    return json_decode($data,true);
+    return json_decode($data, true);
 }
 
 function guid()
@@ -399,45 +403,46 @@ function guid()
         return $uuid;
     }
 
-
-    /**
-     * 发送HTTP请求方法
-     * @param string $url 请求URL
-     * @param array $params 请求参数
-     * @param string $method 请求方法GET/POST
-     * @return array $data  响应数据
-     */
-    function http_send($url, $params, $method = 'GET', $header = array(), $multi = false)
-    {
-        $opts = array(
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_HTTPHEADER => $header
-        );
-        /* 根据请求类型设置特定参数 */
-        switch (strtoupper($method)) {
-            case 'GET':
-                $opts[CURLOPT_URL] = $url . '?' . http_build_query($params);
-                break;
-            case 'POST':
-                //判断是否传输文件
-                $params = $multi ? $params : http_build_query($params);
-                $opts[CURLOPT_URL] = $url;
-                $opts[CURLOPT_POST] = 1;
-                $opts[CURLOPT_POSTFIELDS] = $params;
-                break;
-            default:
-                throw new Exception('不支持的请求方式！');
-        }
-        /* 初始化并执行curl请求 */
-        $ch = curl_init();
-        curl_setopt_array($ch, $opts);
-        $data = curl_exec($ch);
-        $error = curl_error($ch);
-        curl_close($ch);
-        if ($error) throw new Exception('请求发生错误：' . $error);
-        return $data;
-    }
 }
+
+/**
+ * 发送HTTP请求方法
+ * @param string $url 请求URL
+ * @param array $params 请求参数
+ * @param string $method 请求方法GET/POST
+ * @return array $data  响应数据
+ */
+function http_send($url, $params, $method = 'GET', $header = array(), $multi = false)
+{
+    $opts = array(
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_HTTPHEADER => $header
+    );
+    /* 根据请求类型设置特定参数 */
+    switch (strtoupper($method)) {
+        case 'GET':
+            $opts[CURLOPT_URL] = $url . '?' . http_build_query($params);
+            break;
+        case 'POST':
+            //判断是否传输文件
+            $params = $multi ? $params : http_build_query($params);
+            $opts[CURLOPT_URL] = $url;
+            $opts[CURLOPT_POST] = 1;
+            $opts[CURLOPT_POSTFIELDS] = $params;
+            break;
+        default:
+            throw new Exception('不支持的请求方式！');
+    }
+    /* 初始化并执行curl请求 */
+    $ch = curl_init();
+    curl_setopt_array($ch, $opts);
+    $data = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+    if ($error) throw new Exception('请求发生错误：' . $error);
+    return $data;
+}
+

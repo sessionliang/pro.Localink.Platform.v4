@@ -86,6 +86,13 @@ insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('18','编辑门禁','door','dooredit','1','16','');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('19','删除门禁','door','doordel','1','16','');
 
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('20','业主管理','homeowner','index','2','1','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('21','添加业主','homeowner','homeowneradd','1','20','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('22','编辑业主','homeowner','homeowneredit','1','20','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('23','删除业主','homeowner','homeownerdel','1','20','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('24','查看业主钥匙详情','homeowner','accesskeylist','1','20','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('25','申请钥匙','homeowner','accesskeyadd','1','20','');
+
 
 
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('26','权限管理','#','#','2','0','fa fa-users');
@@ -281,3 +288,37 @@ CREATE TABLE IF NOT EXISTS `tp_doors`(
   `updater_id` int(10) NULL COMMENT '修改人id',
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门禁表';
+
+
+-- ----------------------------
+-- Table structure for tp_homeowners 业主
+-- ----------------------------
+DROP TABLE IF EXISTS `tp_homeowners`;
+CREATE TABLE IF NOT EXISTS `tp_homeowners`(
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `community_id` int(11) NOT NULL COMMENT '小区ID',
+  `building_id` int(11) NOT NULL COMMENT '单元ID',
+  `flatno_id` int(11) NOT NULL COMMENT '门牌号ID',
+  `name` varchar(50) NOT NULL COMMENT '业主名称',
+  `forename` varchar(50) NOT NULL COMMENT '名',
+  `surname` varchar(50) NOT NULL COMMENT '姓氏',
+  `country_code` varchar(50) NOT NULL COMMENT '手机号国家代码',
+  `phone` varchar(50) NOT NULL COMMENT '手机号',
+  `email` varchar(50) NULL COMMENT '邮箱',
+  `title` varchar(50) NOT NULL COMMENT '称谓：Mr,Mrs,Miss',
+  `user_group` tinyint(1) NOT NULL COMMENT '业主类型：1-ManagingAgent, 2-Owner, 3-OwnerOccupier, 4-Tenant',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '业主状态：1,2,3',
+  `validate_code` varchar(50) NULL COMMENT '校验码',
+  `auth_admin` varchar(50) NULL COMMENT '校验管理员',
+  `auth_time` int(10) NULL COMMENT '校验时间',
+  `alt_contact` varchar(50) NULL COMMENT '联系人',
+  `alt_phone` varchar(50) NULL COMMENT '联系方式',
+  `is_lock` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否锁定：0-否，1-是',
+  `lock_time` int(10) NULL COMMENT '锁定时间',
+  `locker_id` int(10) NULL COMMENT '锁定人id',
+  `create_time` int(10) NOT NULL COMMENT '创建时间',
+  `creator_id` int(10) NULL COMMENT '创建人id',
+  `update_time` int(10) NOT NULL COMMENT '修改时间',
+  `updater_id` int(10) NULL COMMENT '修改人id',
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='业主表';
