@@ -16,6 +16,25 @@
         .layui-form-switch{
             box-sizing: unset;
         }
+
+        .a-delete{
+            position: absolute;
+            left: 11px;
+            top: -29px;
+            width: 77px;
+            height: 76px;
+            line-height: 77px;
+            text-align: center;
+            background-color: gray;
+            opacity: 0.3;
+            color: white;
+        }
+
+
+        .a-delete:hover{
+            opacity: 0.9;
+            color: white;
+        }
     </style>
 </head>
 <body class="gray-bg">
@@ -52,20 +71,23 @@
                             <label class="col-sm-3 control-label">门禁类型：</label>
                             <div class="col-sm-7">
                                 <ul>
-                                    <li><input type="checkbox" name="door_types[]" value="0" {if condition="in_array(0,$community->door_types)"} checked {/if} title="Gate" lay-skin="primary" checked></li>
-                                    <li><input type="checkbox" name="door_types[]" value="1" {if condition="in_array(1,$community->door_types)"} checked {/if} title="Main Entuance" lay-skin="primary"></li>
-                                    <li><input type="checkbox" name="door_types[]" value="2" {if condition="in_array(2,$community->door_types)"} checked {/if} title="Carpark Basement" lay-skin="primary"></li>
-                                    <li><input type="checkbox" name="door_types[]" value="3" {if condition="in_array(3,$community->door_types)"} checked {/if} title="MailBox" lay-skin="primary"></li>
-                                    <li><input type="checkbox" name="door_types[]" value="4" {if condition="in_array(4,$community->door_types)"} checked {/if} title="Building Entrance" lay-skin="primary"></li>
-                                    <li><input type="checkbox" name="door_types[]" value="5" {if condition="in_array(5,$community->door_types)"} checked {/if} title="Storage Room" lay-skin="primary"></li>
-                                    <li><input type="checkbox" name="door_types[]" value="6" {if condition="in_array(6,$community->door_types)"} checked {/if} title="Utility Room" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="1" {if condition="in_array(1,$community->door_types)"} checked {/if} title="Gate" lay-skin="primary" checked></li>
+                                    <li><input type="checkbox" name="door_types[]" value="2" {if condition="in_array(2,$community->door_types)"} checked {/if} title="Main Entuance" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="3" {if condition="in_array(3,$community->door_types)"} checked {/if} title="Carpark Basement" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="4" {if condition="in_array(4,$community->door_types)"} checked {/if} title="MailBox" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="5" {if condition="in_array(5,$community->door_types)"} checked {/if} title="Building Entrance" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="6" {if condition="in_array(6,$community->door_types)"} checked {/if} title="Storage Room" lay-skin="primary"></li>
+                                    <li><input type="checkbox" name="door_types[]" value="7" {if condition="in_array(7,$community->door_types)"} checked {/if} title="Utility Room" lay-skin="primary"></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="form-group layui-form-item">
                             <label class="col-sm-3 control-label">小区图片：</label>
-                            <div class="col-sm-7">
-                                <input id="images" type="text" class="form-control" name="images" required="" aria-required="true">
+                            <div class="col-sm-6" id="imagePanel" style="border: 1px dotted;padding:0;">
+
+                            </div>
+                            <div class="col-sm-1" style="padding:0">
+                                <input id="btnImg" type="button" style="float:right;" class="btn btn-outline btn-primary" value="上传图片"/>
                             </div>
                         </div>
                         <div class="form-group layui-form-item">
@@ -115,7 +137,63 @@
         });
 
 
+        //上传图片
+        layui.use('upload', function(){
+            var upload = layui.upload;
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#btnImg' //绑定元素
+                ,url: '{:url("community/uploadImg")}' //上传接口
+                ,multiple: true
+                ,accept: "images"
+                ,allDone: function(obj){ //当文件全部被提交后，才触发
+
+                }
+                ,done: function(res){
+                    //上传完毕回调
+                    if(res.code==1){
+                        var imgs = res.data.split(',');
+                        imgs.map(function (val) {
+                            if (val) {
+                                $("#imagePanel").append("<span style='position:relative'>" +
+                                    "<input type='hidden' name='images[]' value='/upload/image/" + val + "'/>" +
+                                    "<img style='margin-left:10px;width: 80px;height:80px;border:1px solid lightslategray;' src='/upload/image/" + val + "'/>" +
+                                    "<a class='a-delete' onclick='deleteImg(this)'>删除</a>" +
+                                    "</span>");
+                            }
+                        });
+                    }
+                    else{
+                        layer.msg('上传失败', {anim: 6});
+                    }
+                }
+                ,error: function(){
+                    //请求异常回调
+                    layer.msg('上传失败', {anim: 6});
+                }
+            });
+        });
+
+        showImgs();
     });
+
+    function deleteImg(ele){
+        $(ele).parent().remove();
+    }
+
+    function showImgs(){
+        var imgs = '{$community->images}'.split(',');
+        imgs.map(function (val) {
+            if (val) {
+                $("#imagePanel").append("<span style='position:relative'>" +
+                    "<input type='hidden' name='images[]' value='" + val + "'/>" +
+                    "<img style='margin-left:10px;width: 80px;height:80px;border:1px solid lightslategray;' src='" + val + "'/>" +
+                    "<a class='a-delete' onclick='deleteImg(this)'>删除</a>" +
+                    "</span>");
+            }
+        });
+    }
 
     /*
     * 打开地图

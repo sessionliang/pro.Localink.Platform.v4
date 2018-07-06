@@ -59,11 +59,16 @@ class Building extends Base
     public function buildingAdd()
     {
         if (request()->isPost()) {
-            $buildingModel = new model\Buildings();
-            $param = input('post.');
-            //保存到数据库
-            $flag = $buildingModel->addBuilding($param);
 
+            $param = input('post.');
+
+            $bnames = explode("\n",$param['bname']);
+            foreach($bnames as $key=>$vo){
+                $param['bname'] = $vo;
+                $buildingModel = new model\Buildings();
+                //保存到数据库
+                $flag = $buildingModel->addBuilding($param);
+            }
             return json(msg($flag['code'], $flag['data'], $flag['msg']));
         }
 

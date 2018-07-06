@@ -80,7 +80,11 @@ insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('12','添加门牌号','flatno','flatnoadd','1','11','');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('13','编辑门牌号','flatno','flatnoedit','1','11','');
 insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('14','删除门牌号','flatno','flatnodel','1','11','');
-
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('15','批量添加门牌号','flatno','flatnoaddbatch','1','11','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('16','门禁管理','door','index','2','1','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('17','添加门禁','door','dooradd','1','16','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('18','编辑门禁','door','dooredit','1','16','');
+insert into `tp_nodes`(`id`,`node_name`,`control_name`,`action_name`,`is_menu`,`type_id`,`style`) values('19','删除门禁','door','doordel','1','16','');
 
 
 

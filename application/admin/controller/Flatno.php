@@ -44,7 +44,7 @@ class Flatno extends Base
                 $selectResult[$key]['operate'] = showOperate($this->makeButton($vo['id']));
             }
 
-            $return['total'] = $flatnoModel->getAllFlatno($where);  // 总数据
+            $return['total'] = $flatnoModel->getFlatnoCount($where);  // 总数据
             $return['rows'] = $selectResult;   //数据列表
 
             return json($return);
@@ -75,6 +75,50 @@ class Flatno extends Base
             //保存到数据库
             $flag = $flatnoModel->addFlatno($param);
 
+            return json(msg($flag['code'], $flag['data'], $flag['msg']));
+        }
+
+        $communityModel = new model\Communitys();
+        $communitys = $communityModel->getAllCommunity([]);
+        $this->assign([
+            'communitys' => $communitys
+        ]);
+        return view();
+    }
+
+    /*
+     * 门牌号批量添加
+     * */
+    public function flatnoAddBatch()
+    {
+        if (request()->isPost()) {
+
+            $param = input('post.');
+
+            $flatno_pre = $param['flatno_pre'];
+            $flatno_min = $param['flatno_min'];
+            $flatno_max = $param['flatno_max'];
+            $flatno_home = $param['flatno_home'];
+            if(!$flatno_pre){
+                $flatno_pre = 1;
+            }
+            if(!$flatno_min){
+                $flatno_min = 1;
+            }
+            if(!$flatno_max){
+                $flatno_max = 1;
+            }
+            if(!$flatno_home){
+                $flatno_home = 1;
+            }
+            for($i=$flatno_min; $i<=$flatno_max; $i++){
+                for($j=1; $j<=$flatno_home; $j++){
+                    $flatnoModel = new model\Flatnos();
+                    //保存到数据库
+                    $param['flatno'] = $flatno_pre . "-" . str_pad($i,2,"0",STR_PAD_LEFT) . "" . str_pad($j,2,"0",STR_PAD_LEFT);
+                    $flag = $flatnoModel->addFlatno($param);
+                }
+            }
             return json(msg($flag['code'], $flag['data'], $flag['msg']));
         }
 

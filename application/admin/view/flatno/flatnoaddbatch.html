@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>编辑门牌号</title>
+    <title>批量添加门牌号</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -24,20 +24,20 @@
         <div class="col-sm-10">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>编辑门牌号</h5>
+                    <h5>批量添加门牌号</h5>
                     <div class="ibox-tools">
                         <a href="{:url('flatno/index')}" class="btn btn-primary btn-xs">返回</a>
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form class="layui-form form-horizontal m-t" method="post" action="{:url('flatno/flatnoadd')}">
+                    <form class="layui-form form-horizontal m-t" method="post" action="{:url('flatno/flatnoaddbatch')}">
                         <div class="form-group layui-form-item">
                             <label class="col-sm-3 control-label">所属小区：</label>
                             <div class="col-sm-7">
                                 <select id="community_id" name="community_id" lay-search lay-filter="community_id">
                                     <option value="">-- 请选择小区 --</option>
                                     {volist name="$communitys" id="vo"}
-                                    <option {if condition="$vo->id==$flatno->community_id"}selected='selected'{/if} value="{$vo->id}">{$vo->cname}</option>
+                                    <option value="{$vo->id}">{$vo->cname}</option>
                                     {/volist}
                                 </select>
                             </div>
@@ -51,16 +51,30 @@
                             </div>
                         </div>
                         <div class="form-group layui-form-item">
-                            <label class="col-sm-3 control-label">门牌号：</label>
+                            <label class="col-sm-3 control-label">单元号：</label>
                             <div class="col-sm-7">
-                                <input id="flatno" value="{$flatno->flatno}" type="text" class="form-control" name="flatno" required="" aria-required="true">
+                                <input id="flatno_pre" value="1" type="text" class="form-control" name="flatno_pre" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">楼层范围：</label>
+                            <div class="col-sm-2">
+                                <input id="flatno_min" value="1" type="number" class="form-control" name="flatno_min" required="" aria-required="true" placeholder="最低层">
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="flatno_max" value="" type="number" class="form-control" name="flatno_max" required="" aria-required="true" placeholder="最高层">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">每层户数：</label>
+                            <div class="col-sm-7">
+                                <input id="flatno_home" value="1" type="number" class="form-control" name="flatno_home" required="" aria-required="true">
                             </div>
                         </div>
                         <div class="form-group layui-form-item">
                             <div class="col-sm-7">
                             </div>
                             <div class="col-sm-3">
-                                <input type="hidden" name="id" value="{$flatno->id}"/>
                                 <button style="float:right;margin-left:20px;" class="layui-btn" lay-submit="" lay-filter="ADDC">立即提交</button>
                                 <button style="float:right;" type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
@@ -83,11 +97,11 @@
 <script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
 <script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
 <script type="text/javascript">
-    var form;
     $(document).ready(function(){
+
         //表单
         layui.use('form', function () {
-            form = layui.form;
+            var form = layui.form;
             form.on('submit(ADDC)', function (data) {
                 $.post('',data.field,function (res) {
                     if(res.code=='1'){
@@ -102,30 +116,21 @@
             });
 
             form.on('select(community_id)', function(data){
-                getBuildings(data.value);
-            });
-
-            //获取单元楼
-            getBuildings($("#community_id").val(), '{$flatno->building_id}');
-        });
-    });
-    function getBuildings(cid, bid){
-        $.get('{:url("flatno/getBuildings")}',{'community_id':cid},function(retval){
-            if(retval.code == 1){
-                $("#building_id").find('option').remove();
-                $("#building_id").append("<option>-- 请选择单元楼 --</option>");
-                retval.data.map(function(val,index){
-                    $("#building_id").append($("<option value='"+val.id+"'>"+val.bname+"</option>"));
+                $.get('{:url("flatno/getBuildings")}',{'community_id':data.value},function(retval){
+                    if(retval.code == 1){
+                        $("#building_id").find('option').remove();
+                        $("#building_id").append("<option>-- 请选择单元楼 --</option>");
+                        retval.data.map(function(val,index){
+                            $("#building_id").append($("<option value='"+val.id+"'>"+val.bname+"</option>"));
+                        });
+                        form.render('select');
+                    }
                 });
-                if(bid){
-                    //设置单元楼
-                    $("#building_id").val(bid);
-                }
-
-                form.render('select');
-            }
+            });
         });
-    }
+
+
+    });
 </script>
 </body>
 </html>

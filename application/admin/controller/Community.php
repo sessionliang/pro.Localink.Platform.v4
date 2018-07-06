@@ -62,6 +62,12 @@ class Community extends Base
             $communityModel = new model\Communitys();
             $param = input('post.');
             $param['door_types'] = implode(',', $param['door_types']);
+            if(input('?images')){
+                $param['images'] = implode(',', $param['images']);
+            }
+            else{
+                $param['images'] = '';
+            }
             //保存到数据库
             $flag = $communityModel->addCommunity($param);
 
@@ -80,7 +86,8 @@ class Community extends Base
         $communityModel = new model\Communitys();
         $id = input('id');
         $community = $communityModel->getOneById($id);
-        $community->door_types = explode(',',$community->door_types);
+        $community->door_types = explode(',', $community->door_types);
+        $community->images = explode(',', $community->images);
         $this->assign([
             'community' => $community
         ]);
@@ -97,6 +104,13 @@ class Community extends Base
             $communityModel = new model\Communitys();
             $param = input('post.');
             $param['door_types'] = implode(',', $param['door_types']);
+            if(input('?images')){
+                $param['images'] = implode(',', $param['images']);
+            }
+            else{
+                $param['images'] = '';
+            }
+
             //保存到数据库
             $flag = $communityModel->communityEdit($param);
 
@@ -106,7 +120,7 @@ class Community extends Base
         $communityModel = new model\Communitys();
         $id = input('id');
         $community = $communityModel->getOneById($id);
-        $community->door_types = explode(',',$community->door_types);
+        $community->door_types = explode(',', $community->door_types);
 
         $this->assign([
             'community' => $community,
@@ -128,8 +142,11 @@ class Community extends Base
         }
     }
 
-    //选择地址
-    public function selectAddress(){
+    /*
+     * 选择地址
+     * */
+    public function selectAddress()
+    {
 
         $this->assign([
             'lat' => input("get.lat"),
@@ -137,6 +154,31 @@ class Community extends Base
         ]);
 
         return view();
+    }
+
+    /*
+     * 上传图片
+     * */
+    public function uploadImg()
+    {
+        if ($this->request->isPost()) {
+            $files = request()->file();
+            $data = '';
+            foreach ($files as $file) {
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                if ($file) {
+                    $info = $file->move(ROOT_PATH . 'public' . DS . 'upload'. DS .'image');
+                    if ($info) {
+                        // 成功上传后 获取上传信息
+                        $data = str_replace('\\','/',$info->getSaveName()) .','. $data;
+
+                    } else {
+                        // 上传失败获取错误信息
+                    }
+                }
+            }
+            return json(msg(1, $data, ''));
+        }
     }
 
     private function makeButton($id)
@@ -164,5 +206,6 @@ class Community extends Base
         ];
     }
 }
+
 
 

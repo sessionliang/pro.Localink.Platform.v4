@@ -31,14 +31,22 @@ class Flatnos extends Model
                 ->where($where)->limit($offset, $limit)->order('f.id desc')->select();
     }
 
-
     /**
      * 根据搜索条件获取所有的门牌号数量
      * @param $where/查询条件
      */
-    public function getAllFlatno($where)
+    public function getFlatnoCount($where)
     {
         return $this->where($where)->count();
+    }
+
+    /**
+     * 根据搜索条件获取所有的门牌号
+     * @param $where/查询条件
+     */
+    public function getAllFlatno($where)
+    {
+        return $this->where($where)->select();
     }
 
     /*

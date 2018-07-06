@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑门禁</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="__JS__/layui/css/layui.css"rel="stylesheet">
+    <style>
+        .layui-form-switch{
+            box-sizing: unset;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>编辑门禁</h5>
+                    <div class="ibox-tools">
+                        <a href="{:url('door/index')}" class="btn btn-primary btn-xs">返回</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form class="layui-form form-horizontal m-t" method="post" action="{:url('door/dooredit')}">
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">所属小区：</label>
+                            <div class="col-sm-7">
+                                <select id="community_id" name="community_id" lay-search lay-filter="community_id">
+                                    <option value="">-- 请选择小区 --</option>
+                                    {volist name="$communitys" id="vo"}
+                                    <option {if condition="$door->community_id==$vo->id"}selected="selected"{/if} value="{$vo->id}">{$vo->cname}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">门禁类型：</label>
+                            <div class="col-sm-7">
+                                <select id="door_type" name="door_type" lay-search lay-filter="door_type">
+                                    <option value="">-- 请选择门禁类型 --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">单元楼：</label>
+                            <div class="col-sm-7">
+                                <select id="building_id" name="building_id" lay-search lay-filter="building_id">
+                                    <option value="">-- 请选择单元楼 --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">门牌号：</label>
+                            <div class="col-sm-7">
+                                <select id="flatno_id" name="flatno_id" lay-search>
+                                    <option value="">-- 请选择门牌号 --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">门禁名称：</label>
+                            <div class="col-sm-7">
+                                <input id="door_name" value="{$door->door_name}" type="text" class="form-control" name="door_name" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <label class="col-sm-3 control-label">PID：</label>
+                            <div class="col-sm-7">
+                                <input id="pid" value="{$door->pid}" type="text" class="form-control" name="pid" required="" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group layui-form-item">
+                            <div class="col-sm-7">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="id" value="{$door->id}"/>
+                                <button style="float:right;margin-left:20px;" class="layui-btn" lay-submit="" lay-filter="ADDC">立即提交</button>
+                                <button style="float:right;" type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/layui/layui.js"></script>
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.config.js"></script>
+<script src="__JS__/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    var form;
+    $(document).ready(function(){
+
+        //表单
+        layui.use('form', function () {
+            form = layui.form;
+            form.on('submit(ADDC)', function (data) {
+                $.post('',data.field,function (res) {
+                    if(res.code=='1'){
+                        layer.alert(res.msg, {title: '友情提示', icon: 1, closeBtn: 0}, function(){
+                            window.location.href = res.data;
+                        });
+                    }else{
+                        layer.msg(res.msg, {anim: 6});
+                    }
+                })
+                return false;
+            });
+
+            //门禁类型改变
+            form.on('select(door_type)',function(data){
+                doorTypeChange(data.value);
+            });
+
+            form.on('select(community_id)', function(data){
+                getDoorTypes(data.value);
+                getBuildings(data.value);
+            });
+
+            form.on('select(building_id)', function(data){
+                getFlatnos(data.value);
+            });
+        });
+
+        //change
+        doorTypeChange('{$door->door_type}');
+        getDoorTypes('{$door->community_id}', '{$door->door_type}');
+        getBuildings('{$door->community_id}', '{$door->building_id}');
+        getFlatnos('{$door->building_id}', '{$door->flatno_id}');
+    });
+
+    function getDoorTypes(cid, tid){
+        $.get('{:url("door/getDoorTypes")}',{'community_id':cid},function(retval){
+            if(retval.code == 1){
+                $("#door_type").find('option').remove();
+                $("#door_type").append("<option selected='selected'>-- 请选择门禁类型 --</option>");
+                retval.data.map(function(val,index){
+                    $("#door_type").append($("<option value='"+val.id+"'>"+val.name+"</option>"));
+                });
+                if(tid){
+                    //设置门禁类型
+                    $("#door_type").val(tid);
+                }
+
+                form?form.render('select'):'';
+            }
+        });
+    }
+
+    function getBuildings(cid, bid){
+        $.get('{:url("door/getBuildings")}',{'community_id':cid},function(retval){
+            if(retval.code == 1){
+                $("#building_id").find('option').remove();
+                $("#building_id").append("<option selected='selected'>-- 请选择单元楼 --</option>");
+                retval.data.map(function(val,index){
+                    $("#building_id").append($("<option value='"+val.id+"'>"+val.bname+"</option>"));
+                });
+                if(bid){
+                    //设置单元楼
+                    $("#building_id").val(bid);
+                }
+
+                form?form.render('select'):'';
+            }
+        });
+    }
+
+    function getFlatnos(bid, fid){
+        $.get('{:url("door/getFlatnos")}',{'building_id':bid},function(retval){
+            if(retval.code == 1){
+                $("#flatno_id").find('option').remove();
+                $("#flatno_id").append("<option selected='selected'>-- 请选择门牌号 --</option>");
+                retval.data.map(function(val,index){
+                    $("#flatno_id").append($("<option value='"+val.id+"'>"+val.flatno+"</option>"));
+                });
+                if(fid){
+                    //设置单元楼
+                    $("#flatno_id").val(fid);
+                }
+
+                form?form.render('select'):'';
+            }
+        });
+    }
+
+    function doorTypeChange(data){
+        switch(data){
+            case '1':
+            case '3':
+                $("#building_id").parent().parent().css("display","none");
+                $("#flatno_id").parent().parent().css("display","none");
+                break;
+            case '2':
+            case '4':
+            case '5':
+            case '7':
+                $("#building_id").parent().parent().css("display","block");
+                $("#flatno_id").parent().parent().css("display","block");
+                break;
+            case '6':
+                $("#building_id").parent().parent().css("display","block");
+                $("#flatno_id").parent().parent().css("display","none");
+                break;
+        }
+    }
+</script>
+</body>
+</html>
